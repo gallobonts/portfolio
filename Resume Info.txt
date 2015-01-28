@@ -1,0 +1,12 @@
+Disclaimer: I am not an artist, any art, music, or sfx are not done by me. Only the code is mine. 
+
+Dragon Survival is a game made with C++ in Visual Studios, it was under a time constraint of a few weeks and does contain a few minor bugs (such as when the player gets hit by a bad guy, the player loses all 3 lives instead of just one because the hit function does not lock itself from being called after it's called once)
+
+Laminia Island was done in JavaScript in Unity under a similar time constraint. Being a 3D game, there was no time to add in graphics and most of what happens (other than movement) is sent to the Debug Log for evaluation. This project was a simulation based project in which the AI had changing goals and made decisions based on proximity to the goal and how desireable the gaol was.
+
+Lunar Leap was a tech demo written in C#. 
+
+Solar Games was a huge project using both C# and JavaScript, and most of my work in it was fixing other people's scripts. At the time that I joined the team, the project was no longer running and I was essentially given the project and told "fix this". The files included here are ones that I wrote after I got the project stable and started getting it to progress. Other than the ComedicCommentary script, I only included the scripts that were compltetly my own. The ComedicCommentary script however, was another broken script that I fixed, and added to giving it quite a bit more functionality. It is very likely that looking through the giant project I overlooked one or two things that I wrote entirely on my own, but after I got the project to a stable point we hired an Armemian team and a lot of the coding from that point forward was collaborative. 
+
+
+
