@@ -1,0 +1,38 @@
+﻿Build started 10/7/2013 12:42:45 AM.
+     1>Project "C:\Users\gallo_000\Documents\DragonSurvival\DragonSurvival\DragonSurvival.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Users\gallo_000\VisualStudioLibraries\SFML-2.1\include" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Attacks.cpp BoarClass.cpp FairyClass.cpp Flask.cpp Game.cpp MageClass.cpp Main.cpp Monster.cpp OgreClass.cpp PlayerClass.cpp SoundManager.cpp
+         Attacks.cpp
+     1>Attacks.cpp(30): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>Attacks.cpp(31): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         BoarClass.cpp
+         FairyClass.cpp
+         Flask.cpp
+         Game.cpp
+         MageClass.cpp
+         Main.cpp
+         Monster.cpp
+         OgreClass.cpp
+         PlayerClass.cpp
+         SoundManager.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\gallo_000\Documents\DragonSurvival\Release\DragonSurvival.exe" /NOLOGO /LIBPATH:"C:\Users\gallo_000\VisualStudioLibraries\SFML-2.1\lib" "sfml-audio.lib" "sfml-graphics.lib" "sfml-main.lib" "sfml-system.lib" "sfml-window.lib" Ws2_32.lib pthreadVC2.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\gallo_000\Documents\DragonSurvival\Release\DragonSurvival.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\gallo_000\Documents\DragonSurvival\Release\DragonSurvival.lib" /MACHINE:X86 /SAFESEH Release\Attacks.obj
+         Release\BoarClass.obj
+         Release\FairyClass.obj
+         Release\Flask.obj
+         Release\Game.obj
+         Release\MageClass.obj
+         Release\Main.obj
+         Release\Monster.obj
+         Release\OgreClass.obj
+         Release\PlayerClass.obj
+         Release\SoundManager.obj
+         Generating code
+     1>c:\users\gallo_000\documents\dragonsurvival\dragonsurvival\ogreclass.cpp(161): warning C4715: 'OgreClass::HandleCollision' : not all control paths return a value
+         Finished generating code
+         DragonSurvival.vcxproj -> C:\Users\gallo_000\Documents\DragonSurvival\Release\DragonSurvival.exe
+     1>Done Building Project "C:\Users\gallo_000\Documents\DragonSurvival\DragonSurvival\DragonSurvival.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:06.75
