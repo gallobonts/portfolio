@@ -1,3 +1,6 @@
+/*
+	Fairy monster
+*/
 #pragma once
 #include "Monster.h"
 #include <iostream>
@@ -15,11 +18,13 @@ private:
 	float AnimationWait;
 	int AnimationDirection;
 
+	//movement
 	sf::Vector2f Direction;
 	float DirectionChangeTimer;
 	float DirectionChangeWait;
 	float DirectionChangeTimerConst;
 
+	//sizes
 	sf::Vector2f screenSize;
 	sf::Vector2f halfSpriteSize;//half because all the uses require hal
 

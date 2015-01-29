@@ -1,3 +1,6 @@
+/*
+	fairy monster
+*/
 #include "FairyClass.h"
 
 
@@ -66,7 +69,7 @@ void FairyClass::Update(sf::Time DeltaTime)
 
 void FairyClass::Wander(sf::Time DeltaTime)
 {
-
+	//same as crab...this should have been included in monster base class
 	float speed=50.0f*DeltaTime.asSeconds();
 	sf::Vector2f movement(0,0);
 	sf::Vector2f tempMovement=movement;

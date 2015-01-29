@@ -1,4 +1,7 @@
-//remove pragma strict to allow dynamic type casting
+/*
+	part of the AI, used to switch between the different states
+*/
+//removed pragma strict to allow dynamic type casting
 
 
 enum State{NULLSTATE,WANDERING,ARRIVING,ALIGNING,SEEKING,FLEEING,ESCAPING,BIRTH,DEATH,IDLE,INTERACT,CONTROL};
@@ -87,7 +90,10 @@ public function ChangeState(new_state:State)
 
 
 
-
+/*
+	most important aspect of the AI
+	determines overall 'happiness' and helps make goals
+*/
 public class Priorities
 {
 public var hunger:float;//determines when to eat
@@ -97,8 +103,10 @@ public var entertainment:float;//causes lamina to play
 public var social:float;//causes lamina to interact with other lamina
 public var knowledge:float;//causes lamina to try something n
 
+
 //const
 private var fadeConst:float=.25;
+//should be tweaked to determine importance
 //consts normalized to 1
 private var hungerConst:float=.15;
 private var exerciseConst:float=.15;
@@ -117,6 +125,7 @@ social=0;
 knowledge=0;
 }
 
+//make the priorities lower in time
 private function Fade(distance:float):Priorities
 {
 	var tempPriorities:Priorities=new Priorities();
@@ -125,6 +134,7 @@ private function Fade(distance:float):Priorities
 	return tempPriorities;
 }
 
+//an overall judge of happiness based on all of the priorities
 public function FindHappiness():float
 {
 	var happiness:float;
@@ -138,6 +148,7 @@ public function FindHappiness():float
 	return happiness;
 }
 
+//used after a goal is met, altering it's priorities accordingly
 public function Add(other:Priorities)
 {
 	var tempPriorities:Priorities=new Priorities();
@@ -151,6 +162,7 @@ public function Add(other:Priorities)
 	return tempPriorities;
 }
 
+//calculate what goal would achieve the greatest happiness after completing
 public function FindNewHappiness(distance:float,tempPriorities:Priorities):float
 {
 	 print("find new happiness begins");
@@ -164,8 +176,11 @@ public function FindNewHappiness(distance:float,tempPriorities:Priorities):float
 	
 }
 
+//
 public function Decrement(time:float)
 {
+//should be tweaked per priority, so they all don't fade at the same time
+
 var decrementation:float= .0001/time;
 hunger= Mathf.Max(hunger-decrementation,0);
 exercise= Mathf.Max(exercise-decrementation,0);
@@ -178,7 +193,7 @@ knowledge= Mathf.Max(knowledge-decrementation,0);
 
 }
 
-
+//used for fighting, hunting, ect...still to be completed
 public class Stats
 {
 public var health:float;

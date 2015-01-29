@@ -1,3 +1,6 @@
+/*
+thrown by mage
+*/
 #pragma once
 #include "Monster.h"
 #include <iostream>

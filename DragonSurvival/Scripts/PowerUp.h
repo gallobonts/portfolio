@@ -1,3 +1,6 @@
+/*
+	handles all the powerups
+*/
 #pragma once
 #include "Monster.h"
 
@@ -16,6 +19,8 @@ private:
 	sf::Sprite sprite;
 	sf::Texture tex;
 	PowerUpType type;
+
+	//animations
 	int AnimationNumber;
 	bool Animate;
 	static const int  maxAninimationNumber=3;

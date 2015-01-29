@@ -1,5 +1,7 @@
 
-
+/*
+	cloase range monster
+*/
 public class Knight extends Monster
 {
 
@@ -29,6 +31,8 @@ public function Update()
 Run();
 
 }
+
+//overides parent's attack function
 public function Attack()
 {
 
@@ -37,14 +41,6 @@ transform.position = Vector3.MoveTowards(transform.position, o_Player.position, 
 }
 
 }// class end
-
-/*
-var dir:Vector3 = (o_Player.position-this.transform.position);
-transform.Translate(dir.normalized*f_Speed);
-//transform.Translate(Vector3(1,1,1));
-circling monster's attack
-*/
-
 
 
 

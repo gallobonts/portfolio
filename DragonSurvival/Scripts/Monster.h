@@ -1,10 +1,17 @@
+/*
+	base class for monsters
+*/
 #pragma once
 #include <SFML\Graphics.hpp>
 #include "SoundManager.h"
 
+
 enum GameState {MENU,GAMEPLAY,PAUSE,LOSESCREEN};//game state used in the project
+
+//works like unity's tags
 enum CollisionID {e_Player,e_Fire,PowerUP,None};
 
+//more effecient then calling math.pi 
 const float PI= 3.1415926535897932384626433832795f;
 struct UpdateReturn
 {
@@ -12,6 +19,7 @@ struct UpdateReturn
 };
 
 
+//all ai states possible
 namespace AI
 {
 enum AIState

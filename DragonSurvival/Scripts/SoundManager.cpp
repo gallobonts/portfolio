@@ -1,3 +1,6 @@
+/*
+	holds all the sfx of the game, and prevents them from interfering with each other
+*/
 #include "SoundManager.h"
 
 void MySoundBuffer::load(Sound::SoundEffect newSound,const std::string & FileName)

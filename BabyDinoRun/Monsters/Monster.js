@@ -1,3 +1,6 @@
+/*
+	base class for monsters
+*/
 enum AIState{ATTACK,FLEE,IGNORE};
 var PowerUp:GameObject[];
 
@@ -15,72 +18,82 @@ var ai:AIState;
 
 public function Initialize(f_newHealth:float,f_newSpeed:float,f_newDamage:float,i_newScore:int,f_newExperience:float,i_newDropChance:int)
 {
-var GodRef : GodSingleton = GodSingleton.GetInstance();
-var f_DifficultyBoost=1+ .2*GodRef.i_GameLevel;
-f_Health=f_newHealth*f_DifficultyBoost;
-f_Speed=f_newSpeed;
-f_Damage=f_newDamage*f_DifficultyBoost;
-i_Score=i_newScore*f_DifficultyBoost;
-f_Experience=f_newExperience*f_DifficultyBoost;
-i_DropChance=i_newDropChance+GodRef.i_Luck;
+	var GodRef : GodSingleton = GodSingleton.GetInstance();
 
-o_Player=GameObject.Find("dragoncube").transform;
-ai=AIState.ATTACK;
-f_BottomCut=150;
+	//get difficulty
+	var f_DifficultyBoost=1+ .2*GodRef.i_GameLevel;
+
+	//set stats
+	f_Health=f_newHealth*f_DifficultyBoost;
+	f_Speed=f_newSpeed;
+	f_Damage=f_newDamage*f_DifficultyBoost;
+	i_Score=i_newScore*f_DifficultyBoost;
+	f_Experience=f_newExperience*f_DifficultyBoost;
+	i_DropChance=i_newDropChance+GodRef.i_Luck;
+
+	//find player
+	o_Player=GameObject.Find("dragoncube").transform;
+
+	//set initial ai state to attack
+	ai=AIState.ATTACK;
+	
+	f_BottomCut=150;
 
 }
 
 public function AIChange(newAI:AIState)
 {
-ai=newAI;
+	ai=newAI;
 }
 
+//base monster's update tick, called by derived classes 
 public function Run()
 {
-if(renderer.isVisible)
-{
-switch(ai)
-{
-case AIState.ATTACK: Attack();
-	break;
-case AIState.IGNORE: Ignore();
-	break;
+	if(renderer.isVisible)
+	{
+	switch(ai)
+	{
+	case AIState.ATTACK: Attack();
+		break;
+	case AIState.IGNORE: Ignore();
+		break;
 
-}//end switch
-}//end if visible
+	}//end switch
+	}//end if visible
 
-else if(this.transform.position.y<o_Player.position.y-f_BottomCut)
-{Destroy(this.gameObject);}
+	else if(this.transform.position.y<o_Player.position.y-f_BottomCut)
+	{Destroy(this.gameObject);}
 
-if(f_Health<=0)
-{Death();}
-
-
-
+	if(f_Health<=0)
+	{Death();}
 }       
+
+//faces the player
 public function FacePlayer()
 {
-if (o_Player) // we get sure the target is here
-{
-	Debug.Log(o_Player.position);
-	var dir = (o_Player.position-this.transform.position);
-	transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(dir),Time.deltaTime * 1);
- 	transform.eulerAngles = Vector3(0, 0, transform.eulerAngles.z);
-	
-}
+
+	if (o_Player) // we make sure the target is here
+	{
+		Debug.Log(o_Player.position);
+		var dir = (o_Player.position-this.transform.position);
+		transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(dir),Time.deltaTime * 1);
+	 	transform.eulerAngles = Vector3(0, 0, transform.eulerAngles.z);
+		
+	}
 }
 public function Attack()
 {
 
 }
 
+//when hp drops to zero, this handle's it's destruction
 public function Death()
 {
-var GodRef : GodSingleton = GodSingleton.GetInstance();
-GodRef.i_Score+=i_Score;
-ReleaseReward();
-GodRef.f_Experience+=f_Experience;
-Destroy(this.gameObject);
+	var GodRef : GodSingleton = GodSingleton.GetInstance();
+	GodRef.i_Score+=i_Score;
+	ReleaseReward();
+	GodRef.f_Experience+=f_Experience;
+	Destroy(this.gameObject);
 }
 
 public function Ignore()
@@ -90,17 +103,19 @@ public function Ignore()
 
 public function ReleaseReward()
 {
-var isReward:boolean=false;
-var r:int= Random.Range(0,100);
-if(r<=i_DropChance)
-{isReward=true;}
+	//determines if a reward is dropped
+	var isReward:boolean=false;
+	var r:int= Random.Range(0,100);
+	if(r<=i_DropChance)
+	{isReward=true;}
 
-if(isReward)
-{
-var reward:int= Random.Range(0,PowerUp.length);
-if (reward<PowerUp.length)
-{Instantiate(PowerUp[reward],this.transform.position,this.transform.rotation);}
-}
+	//drops the reward 
+	if(isReward)
+	{
+	var reward:int= Random.Range(0,PowerUp.length);
+	if (reward<PowerUp.length)
+	{Instantiate(PowerUp[reward],this.transform.position,this.transform.rotation);}
+	}
 
 }
 

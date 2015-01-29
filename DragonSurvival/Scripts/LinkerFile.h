@@ -1,3 +1,6 @@
+/*
+handles linking everything
+*/
 #pragma once
 //SFML files
 //#include <SFML/Graphics.hpp>

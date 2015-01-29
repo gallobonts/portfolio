@@ -1,7 +1,11 @@
+/*
+	Calls audio clips every x amount of seconds
+*/
 using UnityEngine;
 using System.Collections;
 using RacingGameKit;
 
+//determines which sfx can be played
 static public class StatusChange
 {
     public const int RANDOM = 0;
@@ -20,12 +24,20 @@ static public class StatusChange
 }
 public class ComedicCommentary : MonoBehaviour {
 
+	//determines how many times it's been used
     int[] queueCount = new int[StatusChange.LENGTH];
+
+    //determines if the audio clip is currently able to be played
     bool[] isQueue = new bool[StatusChange.LENGTH];
     bool[] audioExists = new bool[StatusChange.LENGTH];
+
+    //1-10 value determining how often an audio clip is played
     int frequency;
+
+
 	public TextAsset commentaryConfigFile;
 	
+	//all of the sound clips
 	public AudioClip[] audioClipsStart;
 	public AudioClip[] audioClipsFinish;
 	public AudioClip[] audioClipsCollision;
@@ -41,7 +53,7 @@ public class ComedicCommentary : MonoBehaviour {
     public AudioClip[] audioClipsRight;
     public AudioClip[] audioClipsWrongWay;
 
-	
+	//helps determine what sound effects are currently able to played
 	private AudioSource audioSource;
 	private AudioSource audioSourceStartFinish;
 	private Race_Manager raceManager;
@@ -66,6 +78,7 @@ public class ComedicCommentary : MonoBehaviour {
         }
         isQueue[StatusChange.RANDOM] = true;
 
+        //based on the (1-10) frequency set in the game manager, the new frequency is calculated to determine how many seconds between each clip play
         if (GameManager.frequency==-1) { GameManager.frequency = 10; }
         frequency = 60 - (GameManager.frequency * 5);
 		audioSource = (AudioSource)gameObject.AddComponent("AudioSource");
@@ -82,6 +95,7 @@ public class ComedicCommentary : MonoBehaviour {
 		thresholdPoor = 100;
 		thresholdWell = 0;
 		
+		//determines what is 'doing well' and what is 'doing poorly' based the number of players
 		switch(numRacers)
 		{
 			case 3:
@@ -286,6 +300,7 @@ public class ComedicCommentary : MonoBehaviour {
 				{
 					dir = j.GetField("commentary_directory").str;
 					
+					//uses a config file to load all the audio clips
 					audioClipsStart = new AudioClip[j.GetField("audio_clips_start").list.Count];
 					for (int i = 0; i < j.GetField("audio_clips_start").list.Count; i++)
 					{

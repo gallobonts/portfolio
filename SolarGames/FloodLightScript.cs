@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    attaches to a trigger volume
+    Determines if the player is in sunlight and should start charging it's battery
+*/
+using UnityEngine;
 using System.Collections;
 
 public class FloodLightScript : MonoBehaviour {
@@ -11,6 +15,7 @@ public class FloodLightScript : MonoBehaviour {
         myhud = GameObject.Find("EnergyUI").GetComponent<BatteryHUD>();
     }
 
+    //you are in light, charge battery
     void OnTriggerEnter(Collider other) 
     {
         if (other.transform.root.name != "Buggy_Tier_2(Clone)")
@@ -21,6 +26,7 @@ public class FloodLightScript : MonoBehaviour {
 
     }
 
+    //you have left light, stop charging battery
     void OnTriggerExit(Collider other)
     {
         if (other.transform.root.name != "Buggy_Tier_2(Clone)")

@@ -1,3 +1,7 @@
+/*
+	middlechain= mini game
+	player controls in mini game
+*/
 #pragma strict
 
 var size:int;

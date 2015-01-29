@@ -1,3 +1,6 @@
+/*
+	handles the player controls
+*/
 #pragma once
 #include "PlayerClass.h"
 #include <iostream>

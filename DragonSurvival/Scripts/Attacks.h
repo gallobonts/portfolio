@@ -1,17 +1,25 @@
+/*
+	handles the player's attacks
+*/
 #pragma once
 #include <SFML\Graphics.hpp>
 #include <iostream>
 //#include <mutex>
 
-
+/*
+	base attack
+*/
 class Attack
 {
 protected:
+	//determines how long to stay alive
 	float AttackAnimTimer;
 	float AttackAnimWait;
 	int AttackAnimNum;
+	//direction of the attack
 	sf::Vector2f Direction;
 	sf::Vector2f screenSize;
+	//fire texture
 	sf::Texture texture;
 
 public:
@@ -22,6 +30,9 @@ public:
 	virtual bool HandleCollision();
 };
 
+/*
+base attack
+*/
 class FireBall: public Attack
 {
 private:
@@ -46,6 +57,9 @@ public:
 	bool HandleCollision();
 };
 
+/*
+constanst flame, but doesn't have as much distance
+*/
 class FlameThrower:public Attack
 {
 	private:
@@ -70,6 +84,9 @@ public:
 
 };
 
+/*
+similiar to fireball, but effects a bigger area
+*/
 class ExplosiveFireBall:public Attack
 {
 	private:

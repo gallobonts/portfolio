@@ -1,3 +1,8 @@
+/*
+	main hud
+*/
+
+
 enum PlayState{ATTACK,INTERACT,MENU};
 
 var playstate:PlayState;
@@ -37,6 +42,8 @@ var right_area:Rect= Rect(Screen.width-100,50,100,Screen.height);//Rect(Screen.w
 
 GUILayout.BeginArea(top_area);//layout for to menu
 GUILayout.BeginHorizontal("box");
+
+//handles the hud's buttons
 if(GUILayout.Button("Pause"))
 {
 }
@@ -62,6 +69,7 @@ for(var i:int=0; i<length; i++)
 {
 	if(Lamina[i].GetComponent(AI).PlayerOwned)
 	{
+		//if you click one of your own lamina, camera changes, and control changes
 		if(GUILayout.Button(Lamina[i].name))
 		{cam.GetComponent(CamControl).Swap(i);}
 	}
@@ -77,6 +85,7 @@ for(i=0; i<length; i++)
 {
 	if(!Lamina[i].GetComponent(AI).PlayerOwned)
 	{
+		//if you click on a guest lamina, camera change and control nulls
 		if(GUILayout.Button(Lamina[i].name))
 		{cam.GetComponent(CamControl).Swap(i);}
 	}

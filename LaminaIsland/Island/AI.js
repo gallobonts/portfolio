@@ -1,3 +1,7 @@
+/*
+	lamina ai and doubles as player controller
+*/
+
 #pragma strict
 
 import System.Collections.Generic;//system namespace, contains the list class
@@ -205,6 +209,7 @@ function resetWeights()
 	moveAcceleration=Vector3(0,0,0);
 }
 
+//currently sometimes causes random flight......
 function ApplyForces()
 //uses the accelerations, multiplies it by the weights and calculates the total acceleration
 {
@@ -272,6 +277,7 @@ timer= Random.Range(3,6);
 
 }
 
+//chills for a second before entering the wander state, 
 function IDLE()
 {
 

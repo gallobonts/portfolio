@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+    Creates all of the platforms
+*/
+
+using UnityEngine;
 using System.Collections;
 
 
@@ -104,6 +108,8 @@ public class Constructor : MonoBehaviour {
         }
 
     }
+
+    //called when player dies or beats level
     public void LevelReset()
     {
 
@@ -116,6 +122,8 @@ public class Constructor : MonoBehaviour {
 
         resetPlatforms = platformsInPlay.GetComponentsInChildren<Transform>() as Transform[]; 
 
+
+
         for (int i = 0; i < resetPlatforms.Length; i++)
         {
             resetPlatforms[i].transform.position = platformPosition;
@@ -126,6 +134,7 @@ public class Constructor : MonoBehaviour {
             }
         }
         
+        //cycle through the platforms and place them back at start
         resetPlatforms = platformsDead.GetComponentsInChildren<Transform>() as Transform[]; 
          for (int i = 0; i < resetPlatforms.Length; i++)
         {
@@ -140,6 +149,7 @@ public class Constructor : MonoBehaviour {
     }
     void ResetBase()
     {
+        //deletes and re-creates the base platform, preventing it from hitting anything in the move process
         basePlatform = (GameObject)Instantiate(myLevels[level].basePlatform);
         basePlatform.transform.parent = basePlatformPlacement.transform;
         basePlatform.transform.position = basePlatformPlacement.transform.position;
@@ -194,6 +204,7 @@ public class Constructor : MonoBehaviour {
       
         
         Platform myPlatform = newPlatforms[randPlatform].GetComponent<Platform>();
+        //checks to make sure all platforms objects have the platform class
         if (myPlatform == null) { Debug.Log("Platform # " + randPlatform + " in level " + level + " does not contain the platform class"); }
         myPlatform.move = true;
         myPlatform.speed = myLevels[level].levelSpeed;
@@ -205,6 +216,7 @@ public class Constructor : MonoBehaviour {
 
     }
 
+    //determines when it can and can't create new platforms
     void OnTrigger2D(Collider2D other)
     {
         willCluster = true;

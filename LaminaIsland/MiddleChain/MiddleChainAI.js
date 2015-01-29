@@ -1,3 +1,7 @@
+/*
+	middlechain= mini game
+	ai for monsters in mini game
+*/
 #pragma strict
 
 var state:State;

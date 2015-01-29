@@ -1,47 +1,10 @@
+/*
+	middlechain= mini game
+	creates the monsters 
+*/
+
 #pragma strict
 
-/*
-
-
-//scratched attempt at singleton
-
-
-class MiddleChain_EntityManager
-{
-	private static var instance:MiddleChain_EntityManager = new MiddleChain_EntityManager();
-	var script:String;
-
-		public static function GetInstance():MiddleChain_EntityManager
-	{
-		return instance;
-	}
-
-	public function start()
-	{
-		
-
-	}
-	
-	public function update()
-	{
-	
-	}
-
-	private function ChangeState(entity:GameObject,state:State,front:String)
-	{
-	 var scriptname:Component=entity.GetComponent(front+"_AI");
-	 scriptname.state=state;
-	}
-	
-	
-	}
-	
-	
-}
-
-
-
-*/
 
 var player:GameObject;
 var enemy:GameObject;
@@ -99,6 +62,7 @@ switch(game_state)
 					print("Enemy " + script.id+" is changing from " + script.state +" to wandering");
 					script.Birth_End();script.readyToChange=false;script.timer=5;
 					break;//end of state birth
+
 				case State.WANDERING:
 					var closestObject:int;
 					var distance:float=Mathf.Infinity;
@@ -177,7 +141,7 @@ function Create_Entity(entity:GameObject,limit:int)
 	 }
 }
 
-
+//switches between states by attempting to blend them. So if you are able to flee one object while chasing another object, then blend the two directions to determine an overal movement
 function Fuzzification(relative_size:int):State//doesnt work???
 {
 	var chase_dom:float;

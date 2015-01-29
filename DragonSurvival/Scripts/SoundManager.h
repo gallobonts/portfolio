@@ -1,3 +1,6 @@
+/*
+	holds all the sfx of the game, and prevents them from interfering with each other
+*/
 #pragma once
 #include <list>
 #include <map>

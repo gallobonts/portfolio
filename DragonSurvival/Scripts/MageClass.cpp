@@ -1,3 +1,6 @@
+/*
+	throws flasks as an attack
+*/
 #include "MageClass.h"
 
 

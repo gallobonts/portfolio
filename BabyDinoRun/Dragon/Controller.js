@@ -1,4 +1,7 @@
 #pragma strict
+/*
+	The player's main interface
+*/
 
 //////////////////////
 //stats
@@ -43,87 +46,89 @@ var ShieldPrefab:GameObject;
 
 function Start()
 {
-  var GodRef : GodSingleton = GodSingleton.GetInstance();
-  if(GodRef.i_DragonLevel==0)
-	{GodRef.ResetCharacter();GodRef.ResetGame();}
+	var GodRef : GodSingleton = GodSingleton.GetInstance();
+	if(GodRef.i_DragonLevel==0)
+		{GodRef.ResetCharacter();GodRef.ResetGame();}
 
- //Hud
- v3_StartPosition=transform.position;
-  
- //movement
- f_HighSpeed=GodRef.f_Speed; 
- f_LowSpeed=f_HighSpeed*.5;
- f_CurrentSpeed=f_HighSpeed;
- f_XDirection=0.0f; 
- f_YDirection=0.0f;
- f_Distance=GodRef.f_Distance;
- f_StartDistance=f_Distance;
- f_LeftLimit=-75;
- f_RightLimit=75;
- ////////////////
- 
- //stats
- f_MaxStamina=GodRef.f_Stamina;
- f_Stamina=f_MaxStamina;
- f_MaxHealth=GodRef.f_Health;
- f_Health=f_MaxHealth;
- i_Strength=GodRef.i_Strength;
- i_Style=GodRef.i_Style;
- i_Luck=GodRef.i_Luck;
- i_ShieldLevel=GodRef.i_ShieldLevel;
- 
- //action delays
- b_isFire=false;
- b_canFire=true;
- b_isShield=false;
- b_canShield=true;
- f_ShieldDelayTimer=10;
- 
- //invinciblity
- b_Invincible=true;
- f_InvincibleDelay=2.0f;
- f_InvincibleTimer= f_InvincibleDelay;
+	 //Hud
+	 v3_StartPosition=transform.position;
+	  
+	 //movement
+	 f_HighSpeed=GodRef.f_Speed; 
+	 f_LowSpeed=f_HighSpeed*.5;
+	 f_CurrentSpeed=f_HighSpeed;
+	 f_XDirection=0.0f; 
+	 f_YDirection=0.0f;
+	 f_Distance=GodRef.f_Distance;
+	 f_StartDistance=f_Distance;
+	 f_LeftLimit=-75;
+	 f_RightLimit=75;
+	 ////////////////
+	 
+	 //stats
+	 f_MaxStamina=GodRef.f_Stamina;
+	 f_Stamina=f_MaxStamina;
+	 f_MaxHealth=GodRef.f_Health;
+	 f_Health=f_MaxHealth;
+	 i_Strength=GodRef.i_Strength;
+	 i_Style=GodRef.i_Style;
+	 i_Luck=GodRef.i_Luck;
+	 i_ShieldLevel=GodRef.i_ShieldLevel;
+	 
+	 //action delays
+	 b_isFire=false;
+	 b_canFire=true;
+	 b_isShield=false;
+	 b_canShield=true;
+	 f_ShieldDelayTimer=10;
+	 
+	 //invinciblity
+	 b_Invincible=true;
+	 f_InvincibleDelay=2.0f;
+	 f_InvincibleTimer= f_InvincibleDelay;
 }
 
 function Update()
 {
+	//use fire
+	if(Input.GetButton("Fire")&&b_canFire)
+	{
+		DragonFirePrefab.SetActive(true);
+		f_CurrentSpeed=f_LowSpeed;
+	}
+	else
+	{
+		DragonFirePrefab.SetActive(false);
+		f_CurrentSpeed=f_HighSpeed;
+	}
 
-if(Input.GetButton("Fire")&&b_canFire)
-{
-	DragonFirePrefab.SetActive(true);
-	f_CurrentSpeed=f_LowSpeed;
-}
-else
-{
-	DragonFirePrefab.SetActive(false);
-	f_CurrentSpeed=f_HighSpeed;
-}
+	//use shield
+	if(Input.GetButton("Shield")&&b_canShield)
+	{
+		var ShieldScript=ShieldPrefab.GetComponent(Shield);
+		ShieldScript.Activate();
+		b_canShield=false;
+	}
 
-if(Input.GetButton("Shield")&&b_canShield)
-{
-	var ShieldScript=ShieldPrefab.GetComponent(Shield);
-	ShieldScript.Activate();
-	b_canShield=false;
-}
+	//move left & right
+	if(Input.GetButton("Horizontal"))
+	{
+		f_XDirection= Input.GetAxis("Horizontal");
+		
+		transform.Translate( new Vector3(-f_XDirection*f_CurrentSpeed*Time.deltaTime,0,0));
+		if(transform.position.x<f_LeftLimit||transform.position.x>f_RightLimit)
+		{transform.Translate( new Vector3(f_XDirection*f_CurrentSpeed*Time.deltaTime,0,0));}
+		
+	}
 
-
-if(Input.GetButton("Horizontal"))
-{
-	f_XDirection= Input.GetAxis("Horizontal");
-	
-	transform.Translate( new Vector3(-f_XDirection*f_CurrentSpeed*Time.deltaTime,0,0));
-	if(transform.position.x<f_LeftLimit||transform.position.x>f_RightLimit)
-	{transform.Translate( new Vector3(f_XDirection*f_CurrentSpeed*Time.deltaTime,0,0));}
-	
-}
-
-if(Input.GetButton("Vertical"))
-{
-	f_YDirection= Input.GetAxis("Vertical");
-	
-	transform.Translate( new Vector3(0,f_YDirection*f_CurrentSpeed*Time.deltaTime),0);
-}
-f_Distance= f_StartDistance - Vector3.Distance(transform.position,v3_StartPosition);
+	//move up & down
+	if(Input.GetButton("Vertical"))
+	{
+		f_YDirection= Input.GetAxis("Vertical");
+		
+		transform.Translate( new Vector3(0,f_YDirection*f_CurrentSpeed*Time.deltaTime),0);
+	}
+	f_Distance= f_StartDistance - Vector3.Distance(transform.position,v3_StartPosition);
 
 
 
@@ -133,47 +138,49 @@ f_Distance= f_StartDistance - Vector3.Distance(transform.position,v3_StartPositi
 
 function LateUpdate()
 {
-var GodRef : GodSingleton = GodSingleton.GetInstance();
-f_Stamina-=Time.deltaTime;
+	var GodRef : GodSingleton = GodSingleton.GetInstance();
+	f_Stamina-=Time.deltaTime;
 
-if (f_Stamina <=0)
+	//determine if player has died
+	if (f_Stamina <=0)
+		{
+		 Score();
+		 GodRef.e_intermediate=IntermediateState.STAMINALOSE;
+		 Application.LoadLevel("IntermediateScreen");
+		}
+	else if(f_Health<=0)
+		{
+		 Score();
+		 GodRef.e_intermediate=IntermediateState.HEALTHLOSE;
+		 Application.LoadLevel("IntermediateScreen");
+		}
+
+	//determine if the player has won
+	if (f_Distance <=0)
+		{
+		GodRef.i_Score+=f_StartDistance-f_Distance;	
+		Application.LoadLevel("Upgrade");
+		}
+
+	//state changes
+		
+	if(!b_canShield&&!b_isShield)//deactivate shield timer
 	{
-	 Score();
-	 GodRef.e_intermediate=IntermediateState.STAMINALOSE;
-	 Application.LoadLevel("IntermediateScreen");
-	}
-else if(f_Health<=0)
-	{
-	 Score();
-	 GodRef.e_intermediate=IntermediateState.HEALTHLOSE;
-	 Application.LoadLevel("IntermediateScreen");
+		f_ShieldDelayTimer-=Time.deltaTime;
+		if(f_ShieldDelayTimer<=0)
+		{
+			b_canShield=true;
+			f_ShieldDelayTimer=f_ShieldDelay;
+		}
 	}
 
-if (f_Distance <=0)
+	if(b_Invincible)
 	{
-	GodRef.i_Score+=f_StartDistance-f_Distance;	
-	Application.LoadLevel("Upgrade");
+		f_InvincibleTimer-=Time.deltaTime;
+		if(f_InvincibleTimer<=0)
+		{b_Invincible=false; f_InvincibleTimer=f_InvincibleDelay;}
+		
 	}
-
-//state changes
-	
-if(!b_canShield&&!b_isShield)//deactivate shield timer
-{
-	f_ShieldDelayTimer-=Time.deltaTime;
-	if(f_ShieldDelayTimer<=0)
-	{
-		b_canShield=true;
-		f_ShieldDelayTimer=f_ShieldDelay;
-	}
-}
-
-if(b_Invincible)
-{
-	f_InvincibleTimer-=Time.deltaTime;
-	if(f_InvincibleTimer<=0)
-	{b_Invincible=false; f_InvincibleTimer=f_InvincibleDelay;}
-	
-}
 	
 }
 
@@ -245,12 +252,13 @@ function OnTriggerEnter(other: Collider)
 	
 function OnGUI()
 {
-var GodRef : GodSingleton = GodSingleton.GetInstance();
-GUI.Label(new Rect(0,0,100,50), "health= " + f_Health.ToString("F0"));
-GUI.Label(new Rect(Screen.width - 100,0,100,50), "Stamina = " + f_Stamina.ToString("F0"));
-GUI.Label(new Rect(Screen.width/2 -100,0,100,50), "Score = " + GodRef.i_Score.ToString("F0"));
-GUI.Label(new Rect(Screen.width-100,Screen.height/2,100,50), "Distance = " + f_Distance.ToString("F0"));
-if(b_canShield)
-{GUI.Label(new Rect(Screen.width/2-100,Screen.height-50,100,50), "Shield is ready to use");}
+	//Produces the main HUD
+	var GodRef : GodSingleton = GodSingleton.GetInstance();
+	GUI.Label(new Rect(0,0,100,50), "health= " + f_Health.ToString("F0"));
+	GUI.Label(new Rect(Screen.width - 100,0,100,50), "Stamina = " + f_Stamina.ToString("F0"));
+	GUI.Label(new Rect(Screen.width/2 -100,0,100,50), "Score = " + GodRef.i_Score.ToString("F0"));
+	GUI.Label(new Rect(Screen.width-100,Screen.height/2,100,50), "Distance = " + f_Distance.ToString("F0"));
+	if(b_canShield)
+	{GUI.Label(new Rect(Screen.width/2-100,Screen.height-50,100,50), "Shield is ready to use");}
 
 }

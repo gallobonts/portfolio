@@ -1,3 +1,6 @@
+/*
+	boar monster derives from monster
+*/
 #pragma once
 #include "Monster.h"
 #include <iostream>

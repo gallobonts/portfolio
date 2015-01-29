@@ -1,6 +1,12 @@
+/*
+	handles the player's attacks
+*/
+
 #include "Attacks.h"
 
-
+/*
+	base attack
+*/
 
 Attack::Attack()
 {
@@ -23,11 +29,14 @@ bool Attack::HandleCollision()
 	return true;
 }
 
-
+/*
+	starting attack
+*/
 FireBall::FireBall(sf::Vector2f StartingPosition,float Orientation,sf::Vector2f newScreenSize)
 {
 	alive=true;
 
+	//load graphics
 	texture.loadFromFile("Assets/Textures/SpriteSheet.png");
 	sprite.setTexture(texture);
 
@@ -64,12 +73,15 @@ FireBall::FireBall(sf::Vector2f StartingPosition,float Orientation,sf::Vector2f 
 	screenSize=newScreenSize;//the boundaries for the player
 }
 
+//returns true if off screen
 bool FireBall::Update(sf::Time DeltaTime,bool AttackCheck,sf::Vector2f StartingPosition,float Orientation)
 {
-
+	//move the fireball forward
 	sprite.move(Speed*DeltaTime.asSeconds()*Direction);
 	sf::Vector2f truePosition[2];
 	sf::FloatRect GlobalBounds=sprite.getGlobalBounds();
+
+	//determines where on the screen the dragon's fireballs are
 	truePosition[0].x=GlobalBounds.left;
 	truePosition[1].x=GlobalBounds.left+GlobalBounds.width;
 	truePosition[0].y=GlobalBounds.top;
@@ -101,18 +113,23 @@ void FireBall::Draw(sf::RenderWindow* window)
 
 	window->draw(sprite);
 }
+
 bool FireBall::CheckCollisions(sf::FloatRect collision)
 {
 	return sprite.getGlobalBounds().intersects(collision);
 }
 bool FireBall::HandleCollision()
 {return true;}
+
+//everything dead gets deleted at once to prevent errors
 void FireBall::Die()
 {
 	alive=false;
 }
 
-
+/*
+works similar to fireball, but with a bit more flair
+*/
 ExplosiveFireBall::ExplosiveFireBall(sf::Vector2f StartingPosition,float Orientation,sf::Vector2f newScreenSize)
 {
 	alive=true;
@@ -162,7 +179,11 @@ bool ExplosiveFireBall::Update(sf::Time DeltaTime,bool AttackCheck,sf::Vector2f 
 	explosionWait+=DeltaTime.asSeconds();
 	if(!exploded)
 	{
+
+		//update position
 		sprite.move(Speed*DeltaTime.asSeconds()*Direction);
+
+		//make sure the object is still in screen
 		sf::Vector2f truePosition[2];
 		sf::FloatRect GlobalBounds=sprite.getGlobalBounds();
 		truePosition[0].x=GlobalBounds.left;
@@ -193,19 +214,27 @@ bool ExplosiveFireBall::Update(sf::Time DeltaTime,bool AttackCheck,sf::Vector2f 
 	
 }
 
+//if collision occurs, enter explosion state
 bool ExplosiveFireBall::HandleCollision()
 {
 	Explode();
 	return false;
 }
+
+
 void ExplosiveFireBall::Explode()
 {
+	//don't explode 2x
 	if(!exploded)
 	{
-	exploded=true;
-	sprite.setScale(3.0f,3.0f);
-	explosionWait=0;
-	explostionTimer=3.0f;
+		//change state
+		exploded=true;
+		//make bigger, to emulate explosion
+		sprite.setScale(3.0f,3.0f);
+
+		//give 3 seconds until clean up
+		explosionWait=0;
+		explostionTimer=3.0f;
 	}
 }
 
@@ -241,14 +270,18 @@ void ExplosiveFireBall::Die()
 	alive=false;
 }
 
+/*
+	powerup attack, constant but close range
+*/
 FlameThrower::FlameThrower(sf::Vector2f StartingPosition,float Orientation,sf::Vector2f newScreenSize,float FlameSize)
 {
 	alive=true;
 
+	//load graphics
 	texture.loadFromFile("Assets/Textures/SpriteSheet.png");
 	sprite.setTexture(texture);
 
-
+	//set flame position/direction
 	screenSize=newScreenSize;
 	sprite.setPosition(StartingPosition);
 	sprite.setRotation(Orientation);
@@ -299,7 +332,7 @@ bool FlameThrower::Update(sf::Time DeltaTime,bool AttackCheck,sf::Vector2f Start
 void FlameThrower::UpdateAnimation(sf::Time DeltaTime)
 {
 
-		//animate dragon
+		//animate flame
 		AttackAnimWait+=DeltaTime.asSeconds();
 		if(AttackAnimWait>=AttackAnimTimer )
 		{	

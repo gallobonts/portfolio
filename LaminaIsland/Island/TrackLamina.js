@@ -1,3 +1,6 @@
+/*
+tracks all of the laminas to make moving between them easier
+*/
 #pragma strict
 
 var laminas:GameObject[];//holds all of laminas in the level

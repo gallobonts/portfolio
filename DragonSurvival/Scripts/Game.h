@@ -1,3 +1,6 @@
+/*
+	main brain, runs the whole game
+*/
 #pragma once
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -18,6 +21,7 @@ enum MenuState{MAIN,NUMBER_OF_PLAYERS};
 class Game
 {
 protected:
+	//used for threading
 	std::mutex Monster_mutex;
 	std::mutex Attack_mutex;
 	std::mutex PowerUp_mutex;

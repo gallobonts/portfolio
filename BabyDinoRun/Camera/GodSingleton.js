@@ -1,4 +1,8 @@
 #pragma strict
+/*
+	used to track the entire game. Also used as an intermediate between scripts.
+*/
+
 class GodSingleton
 {
 private static var Instance : GodSingleton = null;
@@ -50,18 +54,18 @@ else
 
 public function NextLevel()
 {
-i_GameLevel++;
-f_Distance*=1.5;
-i_MonsterCount*=1.5;
-Application.LoadLevel("GameFlow");
+	i_GameLevel++;
+	f_Distance*=1.5;
+	i_MonsterCount*=1.5;
+	Application.LoadLevel("GameFlow");
 }
 
 public function ResetGame()
 {
-f_Distance=350;
-i_MonsterCount=10;
-i_GameLevel=1;
-i_Score=0;
+	f_Distance=350;
+	i_MonsterCount=10;
+	i_GameLevel=1;
+	i_Score=0;
 }
 
 public function ResetCharacter()

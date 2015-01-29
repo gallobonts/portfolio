@@ -1,3 +1,4 @@
+
 #pragma strict
 
 var timer:float=3;

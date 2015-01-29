@@ -1,3 +1,7 @@
+/*
+
+	intermediate script used by the AI
+*/
 #pragma strict
 
 var priorities:Priorities;

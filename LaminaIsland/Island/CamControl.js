@@ -1,3 +1,6 @@
+/*
+	switches the camera between the different lamina
+*/
 #pragma strict
 
 var target:Transform; 
@@ -51,6 +54,8 @@ position+=Vector3(0,10,-10);
 	if(smooth)
 	{
 		var rotation= Quaternion.LookRotation(target.position-transform.position);
+
+		//looks sloppy when done to the position, but rotates the camera slightly with the lamina
 		transform.rotation=Quaternion.Slerp(transform.rotation,rotation,Time.deltaTime*damping);
 		//transform.position=Vector3.Slerp(transform.position,position,Time.deltaTime*damping);
 		transform.position=position;

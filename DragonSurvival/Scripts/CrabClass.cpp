@@ -1,3 +1,6 @@
+/*
+	crab monster
+*/
 #include "CrabClass.h"
 
 
@@ -10,6 +13,7 @@ CrabClass::CrabClass()
 CrabClass::CrabClass(sf::Vector2f position,sf::Vector2f newScreenSize)
 {
 
+	//initialize to wander state
 	alive=true;
 	aiState= AI::AIState::Wander;
 	//sprites
@@ -75,6 +79,7 @@ void CrabClass::Wander(sf::Time DeltaTime)
 	truePosition[0].y=GlobalBounds.top;
 	truePosition[1].y=GlobalBounds.top+GlobalBounds.height;
 
+	//change direction, so not wandering the same direction repeatedly
 	DirectionChangeWait+=DeltaTime.asSeconds();
 	if(DirectionChangeWait>=DirectionChangeTimer)
 	{
@@ -85,7 +90,7 @@ void CrabClass::Wander(sf::Time DeltaTime)
 
 	tempMovement= speed*Direction;
 
-
+	//prevent from moving off screen
 	if(truePosition[0].x+tempMovement.x<0 || truePosition[1].x+tempMovement.x>screenSize.x )
 		{
 			tempMovement.x*=-1;

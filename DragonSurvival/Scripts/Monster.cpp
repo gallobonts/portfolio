@@ -1,6 +1,11 @@
+/*
+	base monster class
+*/
 #pragma once
 #include "Monster.h"
 
+
+//most monster things require random numbers, this is an attempt at making it more random
 float RandomNumber(float Min, float Max)
 {
     return (  (float) rand()   / (float)RAND_MAX ) * (Max - Min) + Min;

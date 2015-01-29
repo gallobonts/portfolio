@@ -1,3 +1,7 @@
+/*
+	main brain, runs the whole game
+*/
+
 #pragma once
 #include "Game.h"
 #include <SFML\Window.hpp>
@@ -338,6 +342,7 @@ void Game::UpdateGamePlay(sf::Time DeltaTime)
 
 void Game::SpawnMonsters()
 {
+	//instead of randomly spawning monsters all over the screen, they spawn at 4 gates. This randomizes which gate they spawn from
 	int RandLocation= rand()%4;
 	sf::Vector2f NewPosition;
 	switch(RandLocation)
@@ -356,32 +361,34 @@ void Game::SpawnMonsters()
 		break;
 	}
 
-		int RandMonst= rand()%5;
-		switch (RandMonst)
-		{
-		case 0:
-			MonsterList.push_back(new OgreClass(NewPosition,screenSize));
+	//randomize which monster is spawned
+	int RandMonst= rand()%5;
+	switch (RandMonst)
+	{
+	case 0:
+		MonsterList.push_back(new OgreClass(NewPosition,screenSize));
+	break;
+	case 1:
+		MonsterList.push_back(new BoarClass(NewPosition,screenSize));
 		break;
-		case 1:
-			MonsterList.push_back(new BoarClass(NewPosition,screenSize));
-			break;
-		case 2:
-			MonsterList.push_back(new FairyClass(NewPosition,screenSize));
-			break;
-		case 3:
-			MonsterList.push_back(new CrabClass(NewPosition,screenSize));
-			break;
-		case 4:
-			MonsterList.push_back(new MageClass(NewPosition,screenSize));
-			break;
-		}
+	case 2:
+		MonsterList.push_back(new FairyClass(NewPosition,screenSize));
+		break;
+	case 3:
+		MonsterList.push_back(new CrabClass(NewPosition,screenSize));
+		break;
+	case 4:
+		MonsterList.push_back(new MageClass(NewPosition,screenSize));
+		break;
+	}
 
-		TimeSinceLastSpawn=0;
-		TimeTilNextSpawn=SpawnDelay;
+	TimeSinceLastSpawn=0;
+	TimeTilNextSpawn=SpawnDelay;
 
 }
 void Game::SpawnMonsters(sf::Time DeltaTime)
 {
+
 	if(MonsterList.size()<MaxMonsters)
 	{
 	TimeSinceLastSpawn+=DeltaTime.asSeconds();
@@ -454,6 +461,7 @@ void Game::CollisionCheck()
 		}
 	}
 
+	//lock the powerup thread until the object is removed, so nothign can acess it
 	PowerUp_mutex.lock();
 	PowerUpList.remove(used);
 	PowerUp_mutex.unlock();
@@ -465,38 +473,43 @@ void Game::CollisionCheck()
 	for(std::list<Monster*>::const_iterator i=MonsterList.begin(),end=MonsterList.end();i!=end;i++)
 	{
 
-		
-			PossibleCollisions=(*i)->GetCollision();
-			for(unsigned int colliderNum=0;colliderNum<PossibleCollisions.size();colliderNum++)
-			{
-				
-				for(int k=0;k<PlayerCount;k++)//playercount...
-				{
-					CollisionID collisionID=Players[k].CheckCollisions(PossibleCollisions[colliderNum]);
-					if(collisionID != CollisionID::e_Fire)
-					{
-					//	i++;
-					
-					}
-					switch(collisionID)
-					{
-					case e_Player:
-						PlayerDeath(k);
-						break;
-					case e_Fire:
-						sf::Vector2f StartPos= sf::Vector2f(PossibleCollisions[colliderNum].left+PossibleCollisions[colliderNum].width/2,PossibleCollisions[colliderNum].top+PossibleCollisions[colliderNum].height/2);
-						RewardPlayer(k,(*i)->HandleCollision(colliderNum,sfx),StartPos);
-						soundManager.Play(sfx);
-						Monster_mutex.lock();
-						//i=MonsterList.erase(i);
-						dead=(*i);
-						Monster_mutex.unlock();
 
-						break;
-					}	
-				}//end playercount loop
-			}//end for possible collisions loop
+	PossibleCollisions=(*i)->GetCollision();
+	for(unsigned int colliderNum=0;colliderNum<PossibleCollisions.size();colliderNum++)
+	{
+		
+		for(int k=0;k<PlayerCount;k++)//playercount...
+		{
+			CollisionID collisionID=Players[k].CheckCollisions(PossibleCollisions[colliderNum]);
+			if(collisionID != CollisionID::e_Fire)
+			{
+			//	i++;
+			
+			}
+			switch(collisionID)
+			{
+			case e_Player:
+				PlayerDeath(k);
+				break;
+			case e_Fire:
+				sf::Vector2f StartPos= sf::Vector2f(PossibleCollisions[colliderNum].left+PossibleCollisions[colliderNum].width/2,PossibleCollisions[colliderNum].top+PossibleCollisions[colliderNum].height/2);
+				RewardPlayer(k,(*i)->HandleCollision(colliderNum,sfx),StartPos);
+				soundManager.Play(sfx);
+
+				//locks the monster mutex, then marks it as dead...deleting it now, crashes it by ruining the for loop.
+				Monster_mutex.lock();
+				//i=MonsterList.erase(i);
+				dead=(*i);
+				Monster_mutex.unlock();
+
+				break;
+			}	
+		}//end playercount loop
+	}//end for possible collisions loop
 	}//end for monstercount loop
+
+
+			//delete everything marked for dead
 			Monster_mutex.lock();
 			MonsterList.remove(dead);
 			Monster_mutex.unlock();
@@ -511,6 +524,7 @@ void Game::RewardPlayer(int PlayerNum, float score,sf::Vector2f startingPosition
 	int randPowerUp= RandomNumber(0,100);
 	if(randPowerUp<=ChancePowerUp)
 	{
+		//add a new powerup 
 		PowerUp_mutex.lock();
 		PowerUpList.push_back(new PowerUp(startingPosition));
 		PowerUp_mutex.unlock();

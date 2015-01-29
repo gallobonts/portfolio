@@ -1,3 +1,6 @@
+/*
+runs the program, includes all the linked files 
+*/
 #include "LinkerFile.h"
 #pragma once;
 

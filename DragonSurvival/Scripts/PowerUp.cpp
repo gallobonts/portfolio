@@ -1,3 +1,7 @@
+/*
+	handles all the powerups
+*/
+
 #include "PowerUp.h"
 
 PowerUp::PowerUp()
@@ -10,8 +14,11 @@ PowerUp::PowerUp(sf::Vector2f StartingPosition)
 	AnimationNumber=0;
 	AnimationTimer=.5;
 	AnimationWait=0;
+	//randomly select a powerup
 	int rand = RandomNumber(0,4);
+	
 	sprite.setScale(.5,.5);
+
 	switch (rand)
 	{
 	case 0:

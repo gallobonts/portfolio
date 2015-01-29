@@ -1,3 +1,6 @@
+/*
+	boar derives from monster
+*/
 #include "BoarClass.h"
 
 
@@ -11,7 +14,7 @@ BoarClass::BoarClass()
 
 BoarClass::BoarClass(sf::Vector2f position,sf::Vector2f newScreenSize)
 {
-
+	//initialize the boar to wander 
 	alive=true;
 	aiState= AI::AIState::Wander;
 	//sprites
@@ -181,8 +184,15 @@ float BoarClass::HandleCollision(int ColliderNum,Sound::SoundEffect & sfx)
 
 void BoarClass::Seek(sf::Vector2f s, sf::Time DeltaTime)
 {
-	sf::Vector2f T = s- sprite.getPosition();
+	//s= what we are seeking, t= target l= length of vector
+	//in future, I should probably never use single letter variables again
+
+	//find target direction
+	sf::Vector2f T = s- sprite.getPosition()
+
+	//divide target diection by length of vector to get vector orientation
 	float l = sqrt(T.x * T.x + T.y * T.y);
+	//move along vector orientation of target towards the goal
 	T.x = T.x/l * 50.0 * DeltaTime.asSeconds();
 	T.y = T.y/l * 50.0 * DeltaTime.asSeconds();
 
