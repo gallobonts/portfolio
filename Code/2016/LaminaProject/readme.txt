@@ -1,0 +1,1 @@
+This is currently a living project, so some code is out of date and needing to be removed, some code is unfinsihed only accomplishing part of what it needs to do, other code is test code yet to be optimized and commented. 
